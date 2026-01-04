@@ -4,7 +4,7 @@ import BasicPage from '@/app/basic/page';
 // Mock HTMLText component since we're testing page structure, not component internals
 jest.mock('react-native-fabric-html-text', () => {
   // Import DOMPurify inside the mock factory for Jest module isolation
-  const purify = jest.requireActual('dompurify');
+  const DOMPurify = jest.requireActual('dompurify');
   return function MockHTMLText({
     html,
     onLinkPress,
@@ -15,7 +15,7 @@ jest.mock('react-native-fabric-html-text', () => {
     return (
       <div
         data-testid="html-text"
-        dangerouslySetInnerHTML={{ __html: purify.sanitize(html) }}
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
         onClick={(e) => {
           if (onLinkPress) {
             const target = e.target as HTMLElement;

@@ -4,7 +4,7 @@ import StylingPage from '@/app/styling/page';
 // Mock HTMLText component to test page structure
 jest.mock('react-native-fabric-html-text', () => {
   // Import DOMPurify inside the mock factory for Jest module isolation
-  const purify = jest.requireActual('dompurify');
+  const DOMPurify = jest.requireActual('dompurify');
   return function MockHTMLText({
     html,
     className,
@@ -19,7 +19,7 @@ jest.mock('react-native-fabric-html-text', () => {
         data-testid="html-text"
         className={className}
         data-numberoflines={numberOfLines}
-        dangerouslySetInnerHTML={{ __html: purify.sanitize(html) }}
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }}
       />
     );
   };
