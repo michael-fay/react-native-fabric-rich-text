@@ -434,14 +434,10 @@ class FabricHTMLTextView : AppCompatTextView {
     hasStateSpannable = true
     customLayout = null  // Clear cached layout to force recreation with new spannable
 
-    // Auto-detect RTL from text content if not explicitly set via props
-    // This ensures layoutDirection is set correctly for alignment to work
-    if (!isRTL && detectTextDirectionRTL(spannable)) {
-      layoutDirection = LAYOUT_DIRECTION_RTL
-      if (DEBUG_LOG) {
-        Log.d(TAG, "[State] Auto-detected RTL text, setting layoutDirection=RTL")
-      }
-    }
+    // Note: RTL auto-detection happens in createCustomLayout() via effectiveRTL,
+    // which combines the explicit isRTL prop with text content detection.
+    // We don't set layoutDirection here to avoid state inconsistency - the
+    // StaticLayout's textDirectionHeuristic handles alignment correctly.
 
     // Apply link detection if any detection props are enabled
     // This must happen AFTER setting stateSpannable since detection operates on it
