@@ -55,7 +55,13 @@ export const ALLOWED_TAGS = [
 /**
  * HTML attributes allowed in rendered content.
  */
-export const ALLOWED_ATTRIBUTES = ['href', 'class', 'dir'] as const;
+export const ALLOWED_ATTRIBUTES = [
+  'href',
+  'class',
+  'dir',
+  'aria-describedby',
+  'style',
+] as const;
 
 /**
  * Allowed URL protocols for href attributes.

@@ -66,8 +66,9 @@ final class AccessibilityContainerTests: XCTestCase {
         // When: We check the accessibility element count
         let count = coreTextView.accessibilityElementCount()
 
-        // Then: Should have 3 accessibility elements (one per link)
-        XCTAssertEqual(count, 3, "Accessibility element count should match link count")
+        // Then: Should have 4 accessibility elements (1 text content + 3 links)
+        // The first element is the full text content for VoiceOver context
+        XCTAssertEqual(count, 4, "Accessibility element count should be text content + link count")
     }
 
     func testAccessibilityElementCountIsZeroForEmptyText() {
@@ -170,7 +171,8 @@ final class AccessibilityContainerTests: XCTestCase {
         coreTextView.layoutIfNeeded()
 
         // When: We get the first link's accessibility label
-        guard let element = coreTextView.accessibilityElement(at: 0) as? UIAccessibilityElement else {
+        // Note: Index 0 is the text content element, links start at index 1
+        guard let element = coreTextView.accessibilityElement(at: 1) as? UIAccessibilityElement else {
             XCTFail("Should have accessibility element")
             return
         }
@@ -195,7 +197,8 @@ final class AccessibilityContainerTests: XCTestCase {
         coreTextView.layoutIfNeeded()
 
         // When: We get the accessibility traits
-        guard let element = coreTextView.accessibilityElement(at: 0) as? UIAccessibilityElement else {
+        // Note: Index 0 is the text content element, links start at index 1
+        guard let element = coreTextView.accessibilityElement(at: 1) as? UIAccessibilityElement else {
             XCTFail("Should have accessibility element")
             return
         }
@@ -217,7 +220,8 @@ final class AccessibilityContainerTests: XCTestCase {
         coreTextView.layoutIfNeeded()
 
         // When: We get the accessibility frame
-        guard let element = coreTextView.accessibilityElement(at: 0) as? UIAccessibilityElement else {
+        // Note: Index 0 is the text content element, links start at index 1
+        guard let element = coreTextView.accessibilityElement(at: 1) as? UIAccessibilityElement else {
             XCTFail("Should have accessibility element")
             return
         }
@@ -241,7 +245,8 @@ final class AccessibilityContainerTests: XCTestCase {
         coreTextView.layoutIfNeeded()
 
         // When: We try to activate the link
-        guard let element = coreTextView.accessibilityElement(at: 0) as? UIAccessibilityElement else {
+        // Note: Index 0 is the text content element, links start at index 1
+        guard let element = coreTextView.accessibilityElement(at: 1) as? UIAccessibilityElement else {
             XCTFail("Should have accessibility element")
             return
         }
@@ -317,7 +322,8 @@ final class AccessibilityContainerTests: XCTestCase {
         coreTextView.layoutIfNeeded()
 
         // When: We get the accessibility element
-        guard let element = coreTextView.accessibilityElement(at: 0) as? UIAccessibilityElement else {
+        // Note: Index 0 is the text content element, links start at index 1
+        guard let element = coreTextView.accessibilityElement(at: 1) as? UIAccessibilityElement else {
             XCTFail("Should have accessibility element")
             return
         }
@@ -381,9 +387,11 @@ final class AccessibilityContainerTests: XCTestCase {
         coreTextView.attributedText = attributedText
         coreTextView.layoutIfNeeded()
 
-        // When: We get all accessibility labels
+        // When: We get all accessibility labels for links (skip text content at index 0)
         var labels: [String] = []
-        for i in 0..<coreTextView.accessibilityElementCount() {
+        let elementCount = coreTextView.accessibilityElementCount()
+        // Start from index 1 since index 0 is the text content element
+        for i in 1..<elementCount {
             if let element = coreTextView.accessibilityElement(at: i) as? UIAccessibilityElement,
                let label = element.accessibilityLabel {
                 labels.append(label)

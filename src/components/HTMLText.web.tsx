@@ -204,7 +204,6 @@ export default function HTMLText({
       dir={writingDirection === 'auto' ? undefined : writingDirection}
       data-testid={testID}
       onClick={onLinkPress ? handleClick : undefined}
-      tabIndex={0}
       aria-label={ariaLabel}
       role={role}
       // nosemgrep: no-dangerous-innerhtml-without-sanitization - finalHtml is re-sanitized via sanitize() after accessibility attribute injection
