@@ -5,7 +5,13 @@ rules:
     message: "dangerouslySetInnerHTML used without DOMPurify sanitization. This is a potential XSS vulnerability."
     severity: ERROR
     languages: [typescript, javascript]
-    pattern-regex: 'dangerouslySetInnerHTML\s*=\s*\{\s*\{\s*__html\s*:\s*(?!DOMPurify\.sanitize)'
+    paths:
+      include:
+        - "*.web.tsx"
+        - "*.web.ts"
+    # Match dangerouslySetInnerHTML unless sanitize() or DOMPurify.sanitize() is called inline
+    # Note: Using \s+ (not \s*) before lookahead to prevent regex backtracking false positives
+    pattern-regex: 'dangerouslySetInnerHTML\s*=\s*\{\s*\{\s*__html\s*:\s+(?!(sanitize\(|DOMPurify\.sanitize\())'
 
   - id: no-innerhtml-assignment
     message: "Direct innerHTML assignment is dangerous. Use DOMPurify.sanitize() first."

@@ -141,10 +141,10 @@ export default function HTMLText({
     return null;
   }
 
-  // Sanitize HTML - this is the ONLY string manipulation we do
-  // All post-processing (link annotations, truncation) happens via DOM APIs in useEffect
-  const sanitizedHtml = sanitize(trimmedHtml);
   const cssStyle = convertStyle(style);
+
+  // Sanitize HTML for link counting (also sanitized inline in dangerouslySetInnerHTML below)
+  const sanitizedHtml = sanitize(trimmedHtml);
 
   // Count links for ARIA attributes
   const linkCount = (sanitizedHtml.match(/<a\s[^>]*href\s*=/gi) || []).length;
@@ -184,10 +184,8 @@ export default function HTMLText({
       tabIndex={0}
       aria-label={ariaLabel}
       role={role}
-      // SAFETY: sanitizedHtml is sanitized via DOMPurify (sanitize() function imported from sanitize.web).
-      // All post-processing (accessibility annotations, truncation styles) is performed via DOM APIs
-      // in the useEffect hook above, not via string manipulation. This ensures XSS protection.
-      dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
+      // SAFETY: sanitize() uses DOMPurify (browser) or sanitize-html (SSR) - see sanitize.web.ts
+      dangerouslySetInnerHTML={{ __html: sanitize(trimmedHtml) }}
     />
   );
 }
