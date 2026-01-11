@@ -7,13 +7,14 @@ export { ALLOWED_TAGS, ALLOWED_ATTR };
 
 // Dangerous CSS patterns that should be stripped from style attributes
 // These patterns are used in XSS attacks via CSS (legacy IE expression(), javascript: URLs, etc.)
+// Note: Do NOT use /g flag - it makes RegExp.prototype.test() stateful via lastIndex
 const DANGEROUS_CSS_PATTERNS = [
-  /javascript\s*:/gi,
-  /expression\s*\(/gi,
-  /behavior\s*:/gi,
-  /-moz-binding\s*:/gi,
-  /vbscript\s*:/gi,
-  /data\s*:/gi,
+  /javascript\s*:/i,
+  /expression\s*\(/i,
+  /behavior\s*:/i,
+  /-moz-binding\s*:/i,
+  /vbscript\s*:/i,
+  /data\s*:/i,
 ];
 
 /**
